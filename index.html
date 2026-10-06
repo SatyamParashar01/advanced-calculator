@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Calculator Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">🧮</span>
+          <span class="logo-text">CalcHub</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="calculator">
+          <span class="nav-icon">🔢</span> Calculator
+        </button>
+        <button class="nav-item" data-tab="converter">
+          <span class="nav-icon">💱</span> Currency
+        </button>
+        <button class="nav-item" data-tab="units">
+          <span class="nav-icon">📏</span> Units
+        </button>
+        <button class="nav-item" data-tab="history">
+          <span class="nav-icon">📋</span> History
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <span class="nav-icon">⚙️</span> Settings
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="theme-toggle">
+          <span>Dark Mode</span>
+          <label class="switch">
+            <input type="checkbox" id="themeToggle" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="top-bar">
+        <div class="header-left">
+          <h1 id="pageTitle">Calculator</h1>
+          <p id="pageSubtitle">Basic arithmetic and scientific functions</p>
+        </div>
+        <div class="header-right">
+          <div class="time-display" id="timeDisplay">12:00 AM</div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Calculator Tab -->
+        <section id="calculatorTab" class="tab-content active">
+          <div class="grid-2">
+            <!-- Calculator Panel -->
+            <div class="card calculator-card">
+              <div class="card-header">
+                <h2>Scientific Calculator</h2>
+              </div>
+              <div class="card-body">
+                <div class="display-container">
+                  <div class="calculation-history" id="calcHistory"></div>
+                  <input id="display" class="main-display" type="text" value="0" readonly />
+                </div>
+
+                <div class="calculator-tabs">
+                  <button class="calc-tab-btn active" onclick="switchCalcMode('basic')">Basic</button>
+                  <button class="calc-tab-btn" onclick="switchCalcMode('scientific')">Scientific</button>
+                </div>
+
+                <!-- Basic Mode -->
+                <div id="basicMode" class="calc-mode active">
+                  <div class="button-grid grid-4">
+                    <button class="btn btn-clear" onclick="clearDisplay()">C</button>
+                    <button class="btn btn-operator" onclick="appendValue('/')>÷</button>
+                    <button class="btn btn-operator" onclick="appendValue('*')">×</button>
+                    <button class="btn btn-delete" onclick="deleteLast()">⌫</button>
+
+                    <button class="btn" onclick="appendValue('7')">7</button>
+                    <button class="btn" onclick="appendValue('8')">8</button>
+                    <button class="btn" onclick="appendValue('9')">9</button>
+                    <button class="btn btn-operator" onclick="appendValue('-')">−</button>
+
+                    <button class="btn" onclick="appendValue('4')">4</button>
+                    <button class="btn" onclick="appendValue('5')">5</button>
+                    <button class="btn" onclick="appendValue('6')">6</button>
+                    <button class="btn btn-operator" onclick="appendValue('+')">+</button>
+
+                    <button class="btn" onclick="appendValue('1')">1</button>
+                    <button class="btn" onclick="appendValue('2')">2</button>
+                    <button class="btn" onclick="appendValue('3')">3</button>
+                    <button class="btn btn-equals" onclick="calculate()">= </button>
+
+                    <button class="btn" onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+                    <button class="btn" onclick="appendValue('.')">.</button>
+                    <button class="btn btn-function" onclick="appendValue('%')">%</button>
+                  </div>
+                </div>
+
+                <!-- Scientific Mode -->
+                <div id="scientificMode" class="calc-mode">
+                  <div class="button-grid grid-5">
+                    <button class="btn btn-clear" onclick="clearDisplay()">C</button>
+                    <button class="btn btn-function" onclick="appendValue('sin(')">sin</button>
+                    <button class="btn btn-function" onclick="appendValue('cos(')">cos</button>
+                    <button class="btn btn-function" onclick="appendValue('tan(')">tan</button>
+                    <button class="btn btn-delete" onclick="deleteLast()">⌫</button>
+
+                    <button class="btn btn-function" onclick="appendValue('sqrt(')">√</button>
+                    <button class="btn btn-function" onclick="appendValue('^')">x^y</button>
+                    <button class="btn btn-function" onclick="appendValue('^2')">x²</button>
+                    <button class="btn btn-function" onclick="appendValue('log(')">log</button>
+                    <button class="btn btn-operator" onclick="appendValue('/')>÷</button>
+
+                    <button class="btn btn-function" onclick="appendValue('ln(')">ln</button>
+                    <button class="btn btn-function" onclick="appendValue('pi')">π</button>
+                    <button class="btn btn-function" onclick="appendValue('e')">e</button>
+                    <button class="btn btn-function" onclick="appendValue('(')">( </button>
+                    <button class="btn btn-operator" onclick="appendValue('*')">×</button>
+
+                    <button class="btn" onclick="appendValue('7')">7</button>
+                    <button class="btn" onclick="appendValue('8')">8</button>
+                    <button class="btn" onclick="appendValue('9')">9</button>
+                    <button class="btn btn-function" onclick="appendValue(')')">)</button>
+                    <button class="btn btn-operator" onclick="appendValue('-')">−</button>
+
+                    <button class="btn" onclick="appendValue('4')">4</button>
+                    <button class="btn" onclick="appendValue('5')">5</button>
+                    <button class="btn" onclick="appendValue('6')">6</button>
+                    <button class="btn btn-function" onclick="appendValue('%')">%</button>
+                    <button class="btn btn-operator" onclick="appendValue('+')">+</button>
+
+                    <button class="btn" onclick="appendValue('1')">1</button>
+                    <button class="btn" onclick="appendValue('2')">2</button>
+                    <button class="btn" onclick="appendValue('3')">3</button>
+                    <button class="btn" onclick="appendValue('.')">.</button>
+                    <button class="btn btn-equals" onclick="calculate()" style="grid-row: span 2;">= </button>
+
+                    <button class="btn" onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="stats-panel">
+              <div class="card stat-card">
+                <div class="stat-header">📊 Calculations Today</div>
+                <div class="stat-value" id="calcCount">0</div>
+              </div>
+              <div class="card stat-card">
+                <div class="stat-header">💾 Last Result</div>
+                <div class="stat-value" id="lastResult">0</div>
+              </div>
+              <div class="card stat-card">
+                <div class="stat-header">⏱️ Average Time</div>
+                <div class="stat-value">0.2s</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Currency Converter Tab -->
+        <section id="converterTab" class="tab-content">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h2>Currency Exchange</h2>
+              </div>
+              <div class="card-body">
+                <div class="converter-container">
+                  <div class="converter-box">
+                    <label>From</label>
+                    <div class="input-group">
+                      <input type="number" id="amount" value="1" step="0.01" placeholder="Amount" />
+                      <select id="fromCurrency">
+                        <option value="USD">USD</option>
+                        <option value="INR" selected>INR</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="JPY">JPY</option>
+                        <option value="AUD">AUD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="CHF">CHF</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="swap-btn-container">
+                    <button class="btn btn-swap" onclick="swapCurrencies()">⇄</button>
+                  </div>
+
+                  <div class="converter-box">
+                    <label>To</label>
+                    <div class="input-group">
+                      <input type="number" id="convertedAmount" value="1" step="0.01" readonly />
+                      <select id="toCurrency">
+                        <option value="USD" selected>USD</option>
+                        <option value="INR">INR</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="JPY">JPY</option>
+                        <option value="AUD">AUD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="CHF">CHF</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="convertCurrency()" style="width: 100%; margin-top: 20px;">Convert Now</button>
+
+                <div class="exchange-rate-info" id="exchangeInfo">
+                  <p>1 INR = 0.012 USD</p>
+                  <p class="text-muted">Last updated: Just now</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2>Rate Comparison</h2>
+              </div>
+              <div class="card-body">
+                <div class="rate-list" id="rateList">
+                  <div class="rate-item">
+                    <span>USD</span>
+                    <span class="rate-value">1.00</span>
+                  </div>
+                  <div class="rate-item">
+                    <span>INR</span>
+                    <span class="rate-value">83.30</span>
+                  </div>
+                  <div class="rate-item">
+                    <span>EUR</span>
+                    <span class="rate-value">0.92</span>
+                  </div>
+                  <div class="rate-item">
+                    <span>GBP</span>
+                    <span class="rate-value">0.79</span>
+                  </div>
+                  <div class="rate-item">
+                    <span>JPY</span>
+                    <span class="rate-value">156.80</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Unit Converter Tab -->
+        <section id="unitsTab" class="tab-content">
+          <div class="grid-3">
+            <!-- Length -->
+            <div class="card">
+              <div class="card-header">
+                <h2>📏 Length</h2>
+              </div>
+              <div class="card-body">
+                <div class="unit-converter">
+                  <div class="field">
+                    <label>From</label>
+                    <input type="number" class="lengthFrom" value="1" step="0.01" />
+                    <select class="lengthFromUnit">
+                      <option value="m">Meters</option>
+                      <option value="km">Kilometers</option>
+                      <option value="cm">Centimeters</option>
+                      <option value="mm">Millimeters</option>
+                      <option value="mile">Miles</option>
+                      <option value="yd">Yards</option>
+                      <option value="ft">Feet</option>
+                      <option value="in">Inches</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>To</label>
+                    <input type="number" class="lengthTo" value="1" step="0.01" readonly />
+                    <select class="lengthToUnit">
+                      <option value="m">Meters</option>
+                      <option value="km">Kilometers</option>
+                      <option value="cm">Centimeters</option>
+                      <option value="mm">Millimeters</option>
+                      <option value="mile">Miles</option>
+                      <option value="yd">Yards</option>
+                      <option value="ft">Feet</option>
+                      <option value="in">Inches</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-operator" onclick="convertLength()">Convert</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weight -->
+            <div class="card">
+              <div class="card-header">
+                <h2>⚖️ Weight</h2>
+              </div>
+              <div class="card-body">
+                <div class="unit-converter">
+                  <div class="field">
+                    <label>From</label>
+                    <input type="number" class="weightFrom" value="1" step="0.01" />
+                    <select class="weightFromUnit">
+                      <option value="kg">Kilograms</option>
+                      <option value="g">Grams</option>
+                      <option value="mg">Milligrams</option>
+                      <option value="lb">Pounds</option>
+                      <option value="oz">Ounces</option>
+                      <option value="ton">Metric Tons</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>To</label>
+                    <input type="number" class="weightTo" value="1" step="0.01" readonly />
+                    <select class="weightToUnit">
+                      <option value="kg">Kilograms</option>
+                      <option value="g">Grams</option>
+                      <option value="mg">Milligrams</option>
+                      <option value="lb">Pounds</option>
+                      <option value="oz">Ounces</option>
+                      <option value="ton">Metric Tons</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-operator" onclick="convertWeight()">Convert</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Temperature -->
+            <div class="card">
+              <div class="card-header">
+                <h2>🌡️ Temperature</h2>
+              </div>
+              <div class="card-body">
+                <div class="unit-converter">
+                  <div class="field">
+                    <label>From</label>
+                    <input type="number" class="tempFrom" value="0" step="0.01" />
+                    <select class="tempFromUnit">
+                      <option value="c">Celsius</option>
+                      <option value="f">Fahrenheit</option>
+                      <option value="k">Kelvin</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>To</label>
+                    <input type="number" class="tempTo" value="32" step="0.01" readonly />
+                    <select class="tempToUnit">
+                      <option value="c">Celsius</option>
+                      <option value="f" selected>Fahrenheit</option>
+                      <option value="k">Kelvin</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-operator" onclick="convertTemp()">Convert</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- History Tab -->
+        <section id="historyTab" class="tab-content">
+          <div class="card">
+            <div class="card-header">
+              <h2>Calculation History</h2>
+              <button class="btn btn-clear" onclick="clearHistory()">Clear All</button>
+            </div>
+            <div class="card-body">
+              <div class="history-list" id="historyList">
+                <p class="text-muted">No calculations yet</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Tab -->
+        <section id="settingsTab" class="tab-content">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h2>Display Settings</h2>
+              </div>
+              <div class="card-body">
+                <div class="setting-group">
+                  <label>Decimal Places</label>
+                  <input type="range" min="0" max="10" value="2" id="decimalPlaces" />
+                  <span id="decimalValue">2</span>
+                </div>
+                <div class="setting-group">
+                  <label>Angle Mode</label>
+                  <select id="angleMode">
+                    <option value="deg">Degrees</option>
+                    <option value="rad">Radians</option>
+                  </select>
+                </div>
+                <div class="setting-group">
+                  <label>Theme</label>
+                  <select id="themeSelect">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2>About</h2>
+              </div>
+              <div class="card-body">
+                <div class="about-info">
+                  <p><strong>CalcHub</strong></p>
+                  <p>Advanced Calculator Dashboard v1.0</p>
+                  <p class="text-muted">A modern, feature-rich calculator with currency exchange, unit conversion, and scientific functions.</p>
+                  <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p class="text-muted">Features:</p>
+                    <ul class="feature-list">
+                      <li>✓ Scientific Calculator</li>
+                      <li>✓ Currency Exchange</li>
+                      <li>✓ Unit Converter</li>
+                      <li>✓ Calculation History</li>
+                      <li>✓ Dark/Light Theme</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
